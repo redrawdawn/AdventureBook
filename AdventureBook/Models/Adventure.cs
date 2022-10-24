@@ -18,10 +18,14 @@ namespace AdventureBook.Models
         public string Text { get; set; }
         
         public int Difficulty { get; set; }
-        
+
+        [DataType(DataType.Date)]
         public DateTime DateTime { get; set; }
 
         [Required]
-        public DateTime CreateDateTime { get; set; }
+        [DataType(DataType.Date)]
+        public DateTime CreatedDate { get; set; }
+
+        public UserProfile UserProfile { get; set; }
     }
 }
