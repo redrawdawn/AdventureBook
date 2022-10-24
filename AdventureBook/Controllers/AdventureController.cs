@@ -65,5 +65,24 @@ namespace AdventureBook.Controllers
         //Update
 
         //Delete
+        public ActionResult Delete(int id)
+        {
+            _adventureRepository.Delete(id);
+            return RedirectToAction("Index");
+        }
+
+        [HttpPost]
+        public ActionResult Delete(int id, Adventure adventure)
+        {
+            try
+            {
+                _adventureRepository.Delete(id);
+                return RedirectToAction("Index");
+            }
+            catch
+            {
+                return View(adventure);
+            }
+        }
     }
 }

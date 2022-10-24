@@ -6,5 +6,7 @@ namespace AdventureBook.Repositories
     {
         System.Collections.Generic.List<Adventure> GetAllAdventures();
         void Add(Adventure adventure);
+        Adventure GetAdventureById(int id);
+        void Delete(int adventureId);
     }
 }

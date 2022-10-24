@@ -43,6 +43,39 @@ namespace AdventureBook.Repositories
             }
         }
 
+        //Get Adventure by id
+        public Adventure GetAdventureById(int id)
+        {
+            using (var conn = Connection)
+            {
+                conn.Open();
+                using (var cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = @"
+                       SELECT a.Id, a.Title, a.Text, 
+                              a.Difficulty, a.DateTime, a.CreatedDate, 
+                               a.UserProfileId,
+                              u.Name, u.Email
+                        FROM Adventure a
+                              LEFT JOIN UserProfile u ON a.UserProfileId = u.id";
+
+                    cmd.Parameters.AddWithValue("@id", id);
+                    var reader = cmd.ExecuteReader();
+
+                    Adventure adventure = null;
+
+                    if (reader.Read())                 
+                    {
+                        adventure = NewPostFromReader(reader);
+                    };                   
+
+                    reader.Close();
+
+                    return adventure;
+                }
+            }
+        }
+
         private Adventure NewPostFromReader(SqlDataReader reader)
         {
             return new Adventure()
@@ -92,6 +125,20 @@ namespace AdventureBook.Repositories
 
 
                     adventure.Id = (int)cmd.ExecuteScalar();
+                }
+            }
+        }
+        public void Delete(int adventureId)
+        {
+            using (var conn = Connection)
+            {
+                conn.Open();
+                using (var cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = @"DELETE FROM adventure
+                                        WHERE Id = @id";
+                    cmd.Parameters.AddWithValue("@id", adventureId);
+                    cmd.ExecuteNonQuery();
                 }
             }
         }
