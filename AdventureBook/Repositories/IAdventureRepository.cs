@@ -5,5 +5,6 @@ namespace AdventureBook.Repositories
     public interface IAdventureRepository
     {
         System.Collections.Generic.List<Adventure> GetAllAdventures();
+        void Add(Adventure adventure);
     }
 }

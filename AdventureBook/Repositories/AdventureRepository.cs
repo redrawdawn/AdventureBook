@@ -42,6 +42,7 @@ namespace AdventureBook.Repositories
                 }
             }
         }
+
         private Adventure NewPostFromReader(SqlDataReader reader)
         {
             return new Adventure()
@@ -61,23 +62,38 @@ namespace AdventureBook.Repositories
                 }
             };
         }
-              //Create an adventure
 
-                /*INSERT INTO [dbo].[Adventure] (
-                [UserProfileId] , 
-            [Title]         ,
-            [Text]          ,
-            [Difficulty]    ,
-            [Datetime]      ,
-            [CreatedDate]   )
-	        VALUES(
-	        1 ,
-            'Test 2'         ,
-            '1 Text Text Text'          ,
-            3    ,
-            GETDATE() ,
-            GETDATE()   )
+        //Create an adventure
+        public void Add(Adventure adventure)
+        {
+            using (var conn = Connection)
+            {
+                conn.Open();
+                using (var cmd = conn.CreateCommand())
+                {
+                    adventure.CreatedDate = DateTime.Now;
+                    cmd.CommandText = @"
+                        INSERT INTO Adventure (
+                            UserProfileId, 
+                            Title,
+                            Text,
+                            Difficulty,
+                            Datetime,
+                            CreatedDate )
+                        OUTPUT INSERTED.ID 
+                        VALUES (
+                            @UserProfileId, @Title, @Text, @Difficulty, @Datetime, @CreatedDate)";
+                    cmd.Parameters.AddWithValue("@UserProfileId", adventure.UserProfileId);
+                    cmd.Parameters.AddWithValue("@Title", DbUtils.ValueOrDBNull(adventure.Title));
+                    cmd.Parameters.AddWithValue("@Text", DbUtils.ValueOrDBNull(adventure.Text));
+                    cmd.Parameters.AddWithValue("@Difficulty", DbUtils.ValueOrDBNull(adventure.Difficulty));
+                    cmd.Parameters.AddWithValue("@Datetime", DbUtils.ValueOrDBNull (adventure.DateTime));
+                    cmd.Parameters.AddWithValue("@CreatedDate", DbUtils.ValueOrDBNull(adventure.CreatedDate));
 
-                */
+
+                    adventure.Id = (int)cmd.ExecuteScalar();
+                }
+            }
+        }
     }
 }
