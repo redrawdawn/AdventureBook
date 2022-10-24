@@ -36,9 +36,14 @@
                         <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-outline-primary mx-1" title="Edit">
                             <i class="fas fa-pencil-alt"></i>
                         </a>
-                        <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-outline-primary mx-1" title="Delete">
-                            <i class="fas fa-trash"></i>
-                        </a>
+                        <button class="btn btn-secondary btn-sm" data-toggle="dropdown" type="button" data-toggle="dropdown" aria- aria-haspopup="true" aria-expanded="false">
+                            Delete
+                        </button>
+                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                            <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-outline-danger mx-1">
+                                <i class="fas fa-trash">You sure?</i>
+                            </a>                            
+                        </div>
                     </td>
                 </tr>
             }
