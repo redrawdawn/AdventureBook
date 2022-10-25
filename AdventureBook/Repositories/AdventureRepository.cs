@@ -57,7 +57,8 @@ namespace AdventureBook.Repositories
                                a.UserProfileId,
                               u.Name, u.Email
                         FROM Adventure a
-                              LEFT JOIN UserProfile u ON a.UserProfileId = u.id";
+                              LEFT JOIN UserProfile u ON a.UserProfileId = u.id
+                        WHERE a.Id = @id";
 
                     cmd.Parameters.AddWithValue("@id", id);
                     var reader = cmd.ExecuteReader();
@@ -128,6 +129,33 @@ namespace AdventureBook.Repositories
                 }
             }
         }
+
+        public void UpdateAdventure(Adventure adventure)
+        {
+            using (SqlConnection conn = Connection)
+            {
+                conn.Open();
+                using (SqlCommand cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = @"
+                            UPDATE Adventure
+                            SET 
+                                [Title] = @Title,
+                                [Text] = @Text,
+                                [Difficulty] = @Difficulty,
+                                [Datetime] = @DateTime
+                            WHERE Id = @id";
+                    cmd.Parameters.AddWithValue("@Id", adventure.Id);
+                    cmd.Parameters.AddWithValue("@Title", DbUtils.ValueOrDBNull(adventure.Title));
+                    cmd.Parameters.AddWithValue("@Text", DbUtils.ValueOrDBNull(adventure.Text));
+                    cmd.Parameters.AddWithValue("@Difficulty", DbUtils.ValueOrDBNull(adventure.Difficulty));
+                    cmd.Parameters.AddWithValue("@DateTime", DbUtils.ValueOrDBNull(adventure.DateTime));
+                    
+                    cmd.ExecuteNonQuery();
+                }
+            }
+        }
+
         public void Delete(int adventureId)
         {
             using (var conn = Connection)
