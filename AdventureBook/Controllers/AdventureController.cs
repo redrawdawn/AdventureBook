@@ -63,6 +63,33 @@ namespace AdventureBook.Controllers
         }
 
         //Update
+        public ActionResult Edit(int id)
+        {
+            Adventure adventure = _adventureRepository.GetAdventureById(id);
+
+            if (adventure == null)
+            {
+                return NotFound();
+            }
+            return View(adventure);
+        }
+
+        // POST: TagController/Edit/5
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Edit(Adventure adventure)
+        {
+            try
+            {
+                _adventureRepository.UpdateAdventure(adventure);
+                return RedirectToAction("Index");
+            }
+            catch
+            {
+                return View(adventure);
+            }
+        }
+
 
         //Delete
         public ActionResult Delete(int id)
