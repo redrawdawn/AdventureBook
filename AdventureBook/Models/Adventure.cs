@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Runtime.InteropServices;
@@ -27,5 +28,7 @@ namespace AdventureBook.Models
         public DateTime CreatedDate { get; set; }
 
         public UserProfile UserProfile { get; set; }
+
+        public List<Tag> Tags { get; set; }
     }
 }

@@ -11,7 +11,12 @@ namespace AdventureBook.Repositories
 {
     public class AdventureRepository : BaseRepository, IAdventureRepository
     {
-        public AdventureRepository(IConfiguration config) : base(config) { }
+        private readonly ITagRepository _tagRepository;
+
+        public AdventureRepository(IConfiguration config, ITagRepository tagRepository) : base(config)
+        {
+            _tagRepository = tagRepository;
+        }
 
         public List<Adventure> GetAllAdventures()
         {
@@ -35,6 +40,11 @@ namespace AdventureBook.Repositories
                     while (reader.Read())
                     {
                         posts.Add(NewPostFromReader(reader));
+                    }
+
+                    foreach (var post in posts)
+                    {
+                        post.Tags = _tagRepository.GetTagsByAdventureId(post.Id);
                     }
 
                     reader.Close();
@@ -124,7 +134,6 @@ namespace AdventureBook.Repositories
                     cmd.Parameters.AddWithValue("@Difficulty", DbUtils.ValueOrDBNull(adventure.Difficulty));
                     cmd.Parameters.AddWithValue("@Datetime", DbUtils.ValueOrDBNull (adventure.DateTime));
                     cmd.Parameters.AddWithValue("@CreatedDate", DbUtils.ValueOrDBNull(adventure.CreatedDate));
-
 
                     adventure.Id = (int)cmd.ExecuteScalar();
                 }
