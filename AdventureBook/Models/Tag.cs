@@ -4,9 +4,9 @@ namespace AdventureBook.Models
 {
     public class Tag
     {
-        int Id { get; set; }
+        public int Id { get; set; }
 
         [Required]
-        string Name { get; set; }
+        public string Name { get; set; }
     }
 }

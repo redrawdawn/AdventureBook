@@ -32,6 +32,7 @@ namespace AdventureBook
             services.AddTransient<IFirebaseAuthService, FirebaseAuthService>();
             services.AddTransient<IUserProfileRepository, UserProfileRepository>();
             services.AddTransient<IAdventureRepository, AdventureRepository>();
+            services.AddTransient<ITagRepository, TagRepository>();
 
             services.AddControllersWithViews().AddRazorRuntimeCompilation();
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
