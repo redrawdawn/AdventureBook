@@ -29,7 +29,7 @@ namespace AdventureBook.Controllers
         {
             var adventuresVm = new AdventuresViewModel
             {
-                Adventures = _adventureRepository.GetAllAdventures().OrderBy(a => a.Title).ToList()
+                Adventures = _adventureRepository.GetAllAdventures().ToList()
             };
 
             return View(adventuresVm);

@@ -26,7 +26,8 @@ namespace AdventureBook.Repositories
                                a.UserProfileId,
                               u.Name, u.Email
                         FROM Adventure a
-                              LEFT JOIN UserProfile u ON a.UserProfileId = u.id";
+                              LEFT JOIN UserProfile u ON a.UserProfileId = u.id
+                        ORDER BY a.CreatedDate DESC";
                     var reader = cmd.ExecuteReader();
 
                     var posts = new List<Adventure>();

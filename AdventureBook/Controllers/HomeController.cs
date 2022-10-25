@@ -22,7 +22,8 @@ namespace AdventureBook.Controllers
         {
             var userProfileId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value);
             var userProfile = _userProfileRepository.GetById(userProfileId);
-            return View(userProfile);
+            //return View(userProfile);
+            return RedirectToAction("Index", "Adventure");
         }
 
         public IActionResult Privacy()
