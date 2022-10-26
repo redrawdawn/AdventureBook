@@ -1,4 +1,5 @@
 ﻿using AdventureBook.Models;
+using System.Collections.Generic;
 
 namespace AdventureBook.Repositories
 {
@@ -9,5 +10,6 @@ namespace AdventureBook.Repositories
         Adventure GetAdventureById(int id);
         void Delete(int adventureId);
         void UpdateAdventure(Adventure adventure);
+        List<Adventure> GetCurrentUsersAdventures(int userProfileId);
     }
 }

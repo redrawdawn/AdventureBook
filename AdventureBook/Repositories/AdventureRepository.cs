@@ -18,6 +18,7 @@ namespace AdventureBook.Repositories
             _tagRepository = tagRepository;
         }
 
+        //Get All Adventures
         public List<Adventure> GetAllAdventures()
         {
             using (var conn = Connection)
@@ -45,6 +46,41 @@ namespace AdventureBook.Repositories
                     foreach (var post in posts)
                     {
                         post.Tags = _tagRepository.GetTagsByAdventureId(post.Id);
+                    }
+
+                    reader.Close();
+
+                    return posts;
+                }
+            }
+        }
+
+        //Get Current Users Adventures
+        public List<Adventure> GetCurrentUsersAdventures(int userProfileId)
+        {
+            using (var conn = Connection)
+            {
+                conn.Open();
+                using (var cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = @"
+                       SELECT a.Id, a.Title, a.Text, 
+                              a.Difficulty, a.DateTime, a.CreatedDate, 
+                               a.UserProfileId,
+                              u.Name, u.Email
+                        FROM Adventure a
+                              LEFT JOIN UserProfile u ON a.UserProfileId = u.id
+                        WHERE a.UserProfileId = @userProfileId
+                        ORDER BY a.CreatedDate DESC";
+
+                    cmd.Parameters.AddWithValue("@userProfileId", userProfileId);
+                    var reader = cmd.ExecuteReader();
+
+                    var posts = new List<Adventure>();
+
+                    while (reader.Read())
+                    {
+                        posts.Add(NewPostFromReader(reader));
                     }
 
                     reader.Close();
@@ -140,6 +176,7 @@ namespace AdventureBook.Repositories
             }
         }
 
+        //Edit Adventure
         public void UpdateAdventure(Adventure adventure)
         {
             using (SqlConnection conn = Connection)
@@ -166,6 +203,7 @@ namespace AdventureBook.Repositories
             }
         }
 
+        //Delete Adventure
         public void Delete(int adventureId)
         {
             using (var conn = Connection)

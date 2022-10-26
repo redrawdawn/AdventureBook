@@ -35,6 +35,8 @@ namespace AdventureBook.Controllers
             return View(adventuresVm);
         }
 
+        
+
         //GetById
 
         //Create
