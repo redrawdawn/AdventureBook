@@ -35,7 +35,7 @@ namespace AdventureBook.Repositories
                 using (SqlCommand cmd = conn.CreateCommand())
                 {
                     cmd.CommandText = @"
-                                    SELECT Id, Email, FirebaseUserId
+                                    SELECT Id, Name, Email, FirebaseUserId
                                     FROM UserProfile
                                     WHERE Id = @Id";
 
@@ -49,6 +49,7 @@ namespace AdventureBook.Repositories
                         userProfile = new UserProfile
                         {
                             Id = reader.GetInt32(reader.GetOrdinal("Id")),
+                            Name = reader.GetString(reader.GetOrdinal("Name")),
                             Email = reader.GetString(reader.GetOrdinal("Email")),
                             FirebaseUserId = reader.GetString(reader.GetOrdinal("FirebaseUserId")),
                         };

@@ -12,6 +12,7 @@
     <div class="col-md-4">
         <form asp-action="Edit">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            @Html.Hidden("nextPage", Context.Request.Query["nextPage"])
             <div class="form-group">
                 <div class="form-group">
                     <input asp-for="Id" type="hidden" />

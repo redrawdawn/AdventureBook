@@ -56,7 +56,7 @@ namespace AdventureBook.Repositories
         }
 
         //Get Current Users Adventures
-        public List<Adventure> GetCurrentUsersAdventures(int userProfileId)
+        public List<Adventure> GetUserAdventures(int userProfileId)
         {
             using (var conn = Connection)
             {
@@ -130,7 +130,7 @@ namespace AdventureBook.Repositories
             {
                 Id = reader.GetInt32(reader.GetOrdinal("Id")),
                 Title = reader.GetString(reader.GetOrdinal("Title")),
-                Text = reader.GetString(reader.GetOrdinal("Text")),
+                Text = DbUtils.GetNullableString(reader, "Text"),
                 Difficulty = reader.GetInt32(reader.GetOrdinal("Difficulty")),
                 CreatedDate = reader.GetDateTime(reader.GetOrdinal("CreatedDate")),
                 DateTime = (DateTime)DbUtils.GetNullableDateTime(reader, "DateTime"),

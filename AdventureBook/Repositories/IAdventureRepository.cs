@@ -10,6 +10,6 @@ namespace AdventureBook.Repositories
         Adventure GetAdventureById(int id);
         void Delete(int adventureId);
         void UpdateAdventure(Adventure adventure);
-        List<Adventure> GetCurrentUsersAdventures(int userProfileId);
+        List<Adventure> GetUserAdventures(int userProfileId);
     }
 }

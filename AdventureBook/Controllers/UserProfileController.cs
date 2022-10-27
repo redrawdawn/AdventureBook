@@ -23,21 +23,30 @@ namespace AdventureBook.Controllers
             _userProfileRepository = userProfileRepository;
         }
 
-        public IActionResult Index()
+        public IActionResult Index() { return View(); }
+
+        public IActionResult MyAccount()
         {
 
-
             var userProfileId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value);
+            var userProfile = _userProfileRepository.GetById(userProfileId);
 
-            var adventuresVm = new AdventuresViewModel
+
+            var vm = new UserProfileViewModel
             {
-                Adventures = _adventureRepository.GetCurrentUsersAdventures(userProfileId).ToList()
+                Profile = userProfile,
+                Adventures = _adventureRepository.GetUserAdventures(userProfileId).ToList()
             };
-            return View(adventuresVm);
+            return View(vm);
+        }
+
+        public ActionResult DeleteAdventure(int id)
+        {
+            _adventureRepository.Delete(id);
+            return RedirectToAction("MyAccount");
         }
 
 
-       
 
     }
 }
