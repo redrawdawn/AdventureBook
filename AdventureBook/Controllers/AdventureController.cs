@@ -79,12 +79,12 @@ namespace AdventureBook.Controllers
         // POST: TagController/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(Adventure adventure)
+        public ActionResult Edit(int id, Adventure adventure, string nextPage)
         {
             try
             {
                 _adventureRepository.UpdateAdventure(adventure);
-                return RedirectToAction("Index");
+                return Redirect(nextPage);
             }
             catch
             {
