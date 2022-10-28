@@ -30,7 +30,8 @@ namespace AdventureBook.Repositories
                     {
                         var item = new Tag
                         {
-
+                            Id = reader.GetInt32(reader.GetOrdinal("Id")),
+                            Name = reader.GetString(reader.GetOrdinal("Name"))
                         };
                         items.Add(item);
                     }

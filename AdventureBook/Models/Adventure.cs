@@ -29,8 +29,10 @@ namespace AdventureBook.Models
 
         public UserProfile UserProfile { get; set; }
 
-        public List<Tag> Tags { get; set; }
+        public List<Tag> Tags { get; set; } = new List<Tag>();
 
-        public List<int> TagIds { get; set; }
+        public List<int> SelectedTagIds { get; set; } = new List<int>();
+
+        public List<Tag> AllTags { get; set; } = new List<Tag>();
     }
 }

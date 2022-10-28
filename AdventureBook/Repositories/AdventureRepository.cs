@@ -173,6 +173,8 @@ namespace AdventureBook.Repositories
 
                     adventure.Id = (int)cmd.ExecuteScalar();
                 }
+
+                SaveAdventureTags(adventure.Id, adventure.SelectedTagIds);
             }
         }
 
@@ -200,7 +202,48 @@ namespace AdventureBook.Repositories
                     
                     cmd.ExecuteNonQuery();
                 }
+
+                SaveAdventureTags(adventure.Id, adventure.SelectedTagIds);
             }
+        }
+
+        public void SaveAdventureTags(int adventureId, List<int> tagIds)
+        {
+            using (SqlConnection conn = Connection)
+            {
+                conn.Open();
+
+                // Delete all tags for Adventure
+                using (SqlCommand cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = @"DELETE FROM [dbo].[AdventureTag]
+                                        WHERE AdventureId = @adventureId";
+                    cmd.Parameters.AddWithValue("@adventureId", adventureId);
+
+                    cmd.ExecuteNonQuery();
+                }
+
+                // Insert each tag
+                foreach (var tagId in tagIds)
+                {
+                    using (SqlCommand cmd = conn.CreateCommand())
+                    {
+                        // insert into AdventureTag
+                        cmd.CommandText = @"INSERT INTO [dbo].[AdventureTag]
+                                                   ([AdventureId]
+                                                   ,[TagId])
+                                             VALUES
+                                                   (@adventureId
+                                                   ,@tagId)
+                                        ";
+                        cmd.Parameters.AddWithValue("@adventureId", adventureId);
+                        cmd.Parameters.AddWithValue("@tagId", tagId);
+
+                        cmd.ExecuteNonQuery();
+                    }
+                }
+            }
+
         }
 
         //Delete Adventure

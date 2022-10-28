@@ -26,6 +26,16 @@
                 <label asp-for="DateTime" class="control-label">Date</label>
                 <input asp-for="DateTime" class="form-control" />
                 <span asp-validation-for="Title" class="text-danger"></span>
+
+                @Html.LabelFor(x => x.SelectedTagIds, "Tags", new { @class = "control-label" })
+                @Html.ListBoxFor(x =>
+                        x.SelectedTagIds,
+                        Model.AllTags
+                            .OrderBy(t => !Model.SelectedTagIds.Contains(t.Id))
+                            .ThenBy(t => t.Name)
+                            .Select(t => new SelectListItem(t.Name, t.Id.ToString())),
+                        new { @class = "form-control" })
+
             </div>
             <div class="form-group">
                 <input type="submit" value="Save" class="btn btn-primary" />

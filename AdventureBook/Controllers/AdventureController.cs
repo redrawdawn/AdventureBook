@@ -17,11 +17,13 @@ namespace AdventureBook.Controllers
     {
         private readonly IAdventureRepository _adventureRepository;
         private readonly IUserProfileRepository _userProfileRepository;
+        private readonly ITagRepository _tagRepository;
 
-        public AdventureController(IAdventureRepository adventureRepository, IUserProfileRepository userProfileRepository)
+        public AdventureController(IAdventureRepository adventureRepository, IUserProfileRepository userProfileRepository, ITagRepository tagRepository)
         {
             _adventureRepository = adventureRepository;
             _userProfileRepository = userProfileRepository;
+            _tagRepository = tagRepository;
         }
 
         //GetAll
@@ -42,7 +44,9 @@ namespace AdventureBook.Controllers
         //Create
         public ActionResult Create()
         {
-            return View();
+            var newAdventure = new Adventure();
+            newAdventure.AllTags = _tagRepository.GetAllTags();
+            return View(newAdventure);
         }
 
         // POST: TagController/Create
@@ -64,10 +68,12 @@ namespace AdventureBook.Controllers
             }
         }
 
-        //Update
+        //GET the edit form
         public ActionResult Edit(int id)
         {
             Adventure adventure = _adventureRepository.GetAdventureById(id);
+            adventure.SelectedTagIds = _tagRepository.GetTagsByAdventureId(id).Select(t => t.Id).ToList();
+            adventure.AllTags = _tagRepository.GetAllTags();
 
             if (adventure == null)
             {
