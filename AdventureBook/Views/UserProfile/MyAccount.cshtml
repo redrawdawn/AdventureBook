@@ -19,15 +19,14 @@
                     <td>
                         @Html.DisplayFor(modelItem => item.Text)
                     </td>
-                    <td>
+                    @*<td>
                         @Html.DisplayFor(modelItem => item.Difficulty)
-                    </td>
+                    </td>*@
                     <td>
                         @Html.DisplayFor(modelItem => item.DateTime)
                     </td>
                     <td>
-                        @if(item.Tags != null)
-                            foreach (var tag in item.Tags)
+                        @foreach (var tag in item.Tags)
                         {
                             @Html.DisplayFor(_ => tag.Name)
                         }
