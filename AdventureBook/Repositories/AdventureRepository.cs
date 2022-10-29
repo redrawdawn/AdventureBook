@@ -129,7 +129,7 @@ namespace AdventureBook.Repositories
             return new Adventure()
             {
                 Id = reader.GetInt32(reader.GetOrdinal("Id")),
-                Title = reader.GetString(reader.GetOrdinal("Title")),
+                Title = DbUtils.GetNullableString(reader, "Title"),
                 Text = DbUtils.GetNullableString(reader, "Text"),
                 Difficulty = reader.GetInt32(reader.GetOrdinal("Difficulty")),
                 CreatedDate = reader.GetDateTime(reader.GetOrdinal("CreatedDate")),
@@ -214,14 +214,7 @@ namespace AdventureBook.Repositories
                 conn.Open();
 
                 // Delete all tags for Adventure
-                using (SqlCommand cmd = conn.CreateCommand())
-                {
-                    cmd.CommandText = @"DELETE FROM [dbo].[AdventureTag]
-                                        WHERE AdventureId = @adventureId";
-                    cmd.Parameters.AddWithValue("@adventureId", adventureId);
-
-                    cmd.ExecuteNonQuery();
-                }
+                DeleteTagsForAdventure(adventureId, conn);
 
                 // Insert each tag
                 foreach (var tagId in tagIds)
@@ -246,12 +239,27 @@ namespace AdventureBook.Repositories
 
         }
 
+        private static void DeleteTagsForAdventure(int adventureId, SqlConnection conn)
+        {
+            using (SqlCommand cmd = conn.CreateCommand())
+            {
+                cmd.CommandText = @"DELETE FROM [dbo].[AdventureTag]
+                                        WHERE AdventureId = @adventureId";
+                cmd.Parameters.AddWithValue("@adventureId", adventureId);
+
+                cmd.ExecuteNonQuery();
+            }
+        }
+
         //Delete Adventure
         public void Delete(int adventureId)
         {
             using (var conn = Connection)
             {
                 conn.Open();
+
+                DeleteTagsForAdventure(adventureId, conn);
+
                 using (var cmd = conn.CreateCommand())
                 {
                     cmd.CommandText = @"DELETE FROM adventure

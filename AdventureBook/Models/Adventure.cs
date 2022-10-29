@@ -21,7 +21,7 @@ namespace AdventureBook.Models
         public int Difficulty { get; set; }
 
         [DataType(DataType.Date)]
-        public DateTime DateTime { get; set; }
+        public DateTime DateTime { get; set; } = DateTime.Now.Date;
 
         [Required]
         [DataType(DataType.Date)]

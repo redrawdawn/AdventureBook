@@ -6,8 +6,6 @@
     ViewData["Title"] = "Index";
 }
 <div class="container pt-5">
-    <h1>Adventures</h1>
-
     <p>
         <a class="btn btn-secondary" asp-action="Create">➕</a>
     </p>
@@ -15,32 +13,35 @@
         <tbody>
             @foreach (var item in Model.Adventures)
             {
-                <tr>
-                    <td>
+            <div class="card-body">
+                <hr style="height:2px;border-width:0;color:gray;background-color:gray" />
+                <div class="card-body">
+                    <p class="card-subtitle mb-2 text-muted">
                         @Html.DisplayFor(modelItem => item.UserProfile.Name)
-                    </td>
-                    <td>
+                    </p>
+                    <h1 class="card-title">
                         @Html.DisplayFor(modelItem => item.Title)
-                    </td>
-                    <td>
+                    </h1>
+                    <p>
                         @Html.DisplayFor(modelItem => item.Text)
-                    </td>
-                    <td>
+                    </p>
+                    @*<p>
                         @Html.DisplayFor(modelItem => item.Difficulty)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.DateTime)
-                    </td>
-                    <td>
+                    </p>*@
+                    <div>
                         @foreach (var tag in item.Tags)
                         {
                             @Html.DisplayFor(_ => tag.Name)
                         }
-                    </td>
-                    <td>
+                    </div>
+                    <hr />
+                    <p class="text-muted">
+                        @Html.DisplayFor(modelItem => item.DateTime)
+                    </p>
+                    <div>
                         @*<a asp-action="Details" asp-route-id="@item.Id" class="btn btn-outline-primary mx-1" title="View">
-                            <i class="fas fa-eye"></i>
-                        </a>*@
+                <i class="fas fa-eye"></i>
+            </a>*@
                         @{
                             var currentUserProfileId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value);
                             if (item.UserProfileId == currentUserProfileId)
@@ -58,9 +59,10 @@
                                 </div>
                             }
                         }
-                    </td>
-                </tr>
-            }
-        </tbody>
-    </table>
-</div>
+                    </div>
+                </div>
+            </div>
+}
+            </tbody>
+            </table>
+            </div>
