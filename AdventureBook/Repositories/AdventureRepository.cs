@@ -19,21 +19,30 @@ namespace AdventureBook.Repositories
         }
 
         //Get All Adventures
-        public List<Adventure> GetAllAdventures()
+        public List<Adventure> GetAllAdventures(string searchString = null)
         {
+            var isSearch = searchString != null;
+            var searchClause = isSearch
+                ? "WHERE a.Title like @searchParam"
+                : "";
+
             using (var conn = Connection)
             {
                 conn.Open();
                 using (var cmd = conn.CreateCommand())
                 {
-                    cmd.CommandText = @"
+                    cmd.CommandText = @$"
                        SELECT a.Id, a.Title, a.Text, 
                               a.Difficulty, a.DateTime, a.CreatedDate, 
                                a.UserProfileId,
                               u.Name, u.Email
                         FROM Adventure a
                               LEFT JOIN UserProfile u ON a.UserProfileId = u.id
+                        {searchClause}
                         ORDER BY a.CreatedDate DESC";
+
+                    if (isSearch) cmd.Parameters.AddWithValue("@searchParam", $"%{searchString}%");
+
                     var reader = cmd.ExecuteReader();
 
                     var posts = new List<Adventure>();

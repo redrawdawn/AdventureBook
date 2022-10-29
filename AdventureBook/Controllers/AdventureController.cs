@@ -37,7 +37,16 @@ namespace AdventureBook.Controllers
             return View(adventuresVm);
         }
 
-        
+        public ActionResult Search(string searchString)
+        {
+            //Debug.WriteLine(Request.QueryString);
+            var adventuresVm = new AdventuresViewModel
+            {
+                SearchString = searchString,
+                Adventures = _adventureRepository.GetAllAdventures(searchString).ToList()
+            };
+            return View("Index", adventuresVm);
+        }
 
         //GetById
 
