@@ -6,5 +6,7 @@ namespace AdventureBook.Models.ViewModels
     public class AdventuresViewModel
     {
         public List<Adventure> Adventures { get; set; }
+
+        public string SearchString { get; set; } = "";
     }
 }
