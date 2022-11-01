@@ -10,5 +10,7 @@ namespace AdventureBook.Models.ViewModels
         public UserProfile Profile { get; set; }
 
         public List<Adventure> Adventures { get; set; }
+
+        public string SearchString { get; set; } = "";
     }
 }
