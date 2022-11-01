@@ -13,9 +13,9 @@
             <a class="btn btn-secondary btn-sm" asp-action="Create">➕</a>
             <span>&nbsp;&nbsp;&nbsp;&nbsp;</span>
 
-            @Html.TextBoxFor(x => Model.SearchString, new { @class = "form-control" })
+            @Html.TextBoxFor(x => Model.SearchString, new { @class = "form-control", @placeholder = "Search..." })
             
-            <input class="btn btn-secondary btn-sm" type="submit" value="🔍" />
+            <input class="btn btn-secondary btn-sm" type="submit" value="🔎︎" />
         }
     </div>
     @if (Model.Adventures.Count == 0 && !string.IsNullOrEmpty(Model.SearchString)) 
@@ -36,6 +36,7 @@
                 <h1 class="card-title">
                     @Html.DisplayFor(modelItem => item.Title)
                 </h1>
+                @*<img height="260" src="~/images/Woods.png" />*@
                 <p>
                     @Html.DisplayFor(modelItem => item.Text)
                 </p>
@@ -44,16 +45,10 @@
                     var stars = Enumerable.Range(1, 5);
                     foreach (var star in stars)
                     {
-                        var starSpan = (item.Difficulty >= star) ? "<span>★</span>" : "<span>☆</span>";
+                        var starSpan = (item.Difficulty == 0) ? "" : (item.Difficulty >= star) ? "<span>★</span>" : "<span>☆</span>";
                         @Html.Raw(starSpan);
                     }
-                }
-
-                @*<iframe width="560" height="315" src="https://www.youtube.com/embed/m6ZUq6bHkmI" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>*@
-
-                @*<p>
-                    @Html.DisplayFor(modelItem => item.Difficulty)
-                </p>*@
+                }              
 
                 <div>
                     @foreach (var tag in item.Tags)
