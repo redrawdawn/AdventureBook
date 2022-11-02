@@ -10,7 +10,7 @@
 <hr />
 <div class="row">
     <div class="col-md-4">
-        <form asp-action="Edit">
+        <form asp-action="Edit" enctype="multipart/form-data">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             @Html.Hidden("nextPage", Context.Request.Query["nextPage"])
             <div class="form-group">
@@ -27,18 +27,35 @@
 
                 <label asp-for="Difficulty" class="control-label"></label>
                 <input asp-for="Difficulty" class="form-control" />
+                <br />
+                @{
+                    var files = System.IO.Directory.GetFiles(AdventureBook.Utils.Settings.PhotoPath, Model.Id + ".*");
+                    var thisAdventurePhotoFilePath = files.FirstOrDefault();
 
-                <label asp-for="DateTime" class="control-label">Date</label>
+                    if (thisAdventurePhotoFilePath != null)
+                    {
+                        var fileInfo = new System.IO.FileInfo(thisAdventurePhotoFilePath);
+                        @*<img id="photoDisplayxxx" height="260" style="border-radius: 6%" src="~/photos/@(fileInfo.Name)" />*@
+
+                        <div id="photoDisplay">
+                            <img height="260" style="border-radius: 6%" src="~/photos/@(fileInfo.Name)" />
+                        </div>
+                    }
+                }
+                <div>
+                    @Html.TextBox("Photo", null, new { @id = "PhotoFile", type = "file", accept = ".jpg,.jpeg,.png,.gif" }) <br />
+                </div>
+                <br />
                 <input asp-for="DateTime" class="form-control" />
                 <span asp-validation-for="Title" class="text-danger"></span>
 
                 @Html.LabelFor(x => x.SelectedTagIds, "Tags", new { @class = "control-label" })
-                @Html.ListBoxFor(x => 
-                        x.SelectedTagIds, 
+                @Html.ListBoxFor(x =>
+                        x.SelectedTagIds,
                         Model.AllTags
                             .OrderBy(t => !Model.SelectedTagIds.Contains(t.Id))
                             .ThenBy(t => t.Name)
-                            .Select(t => new SelectListItem(t.Name, t.Id.ToString())), 
+                            .Select(t => new SelectListItem(t.Name, t.Id.ToString())),
                         new { @class = "form-control" })
 
             </div>
@@ -55,4 +72,6 @@
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @{await Html.RenderPartialAsync("_PhotoScriptsPartial");}
 }
+

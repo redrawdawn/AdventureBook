@@ -9,6 +9,9 @@ using System.Collections.Generic;
 using Microsoft.AspNetCore.Authorization;
 using System.Security.Claims;
 using System.Diagnostics;
+using System.IO;
+using Microsoft.AspNetCore.Http;
+using AdventureBook.Utils;
 
 namespace AdventureBook.Controllers
 {
@@ -68,6 +71,10 @@ namespace AdventureBook.Controllers
                 var userProfile = _userProfileRepository.GetById(userProfileId);
                 adventure.UserProfileId = userProfile.Id;
                 _adventureRepository.Add(adventure);
+                if (Request.Form.Files.Any())
+                {
+                    SavePhoto(adventure.Id, Request.Form.Files[0]);
+                }
                 return RedirectToAction("Index");
             }
             catch(Exception ex)
@@ -98,6 +105,10 @@ namespace AdventureBook.Controllers
         {
             try
             {
+                if (Request.Form.Files.Any())
+                {
+                    SavePhoto(adventure.Id, Request.Form.Files[0]);
+                }
                 _adventureRepository.UpdateAdventure(adventure);
                 return Redirect(nextPage);
             }
@@ -112,20 +123,48 @@ namespace AdventureBook.Controllers
         public ActionResult Delete(int id)
         {
             _adventureRepository.Delete(id);
+            DeletePhotos(id);
             return RedirectToAction("Index");
         }
 
         [HttpPost]
-        public ActionResult Delete(int id, Adventure adventure)
+        public ActionResult Delete(int id, Adventure adventure, string nextPage)
         {
             try
             {
                 _adventureRepository.Delete(id);
-                return RedirectToAction("Index");
+                return RedirectToAction(nextPage, "Index");
             }
             catch
             {
                 return View(adventure);
+            }
+        }
+
+        private void SavePhoto(int adventureId, IFormFile file)
+        {
+            if (file.Length > 0)
+            {
+                string ext = Path.GetExtension(file.FileName).ToLower();
+                if (ext != ".jpg" && ext != ".jpeg" && ext != ".png" && ext != ".gif")
+                {
+                    throw new BadImageFormatException("Only jpg, jpeg, png, and gif are allowed");
+                }
+                DeletePhotos(adventureId);
+                string path = Path.Combine(Settings.PhotoPath, adventureId + ext);
+                using var stream = new FileStream(path, FileMode.Create);
+                file.CopyTo(stream);
+            }
+        }
+
+
+        private void DeletePhotos(int adventureId)
+        {
+            var files = Directory.GetFiles(Settings.PhotoPath, adventureId + ".*");
+
+            foreach (var file in files)
+            {
+                System.IO.File.Delete(file);
             }
         }
     }

@@ -23,10 +23,7 @@ namespace AdventureBook.Controllers
             _userProfileRepository = userProfileRepository;
         }
 
-        public IActionResult Index() { return View(); }
-
-        public IActionResult MyAccount()
-        {
+        public IActionResult Index() { 
 
             var userProfileId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value);
             var userProfile = _userProfileRepository.GetById(userProfileId);
@@ -43,10 +40,10 @@ namespace AdventureBook.Controllers
         public ActionResult DeleteAdventure(int id)
         {
             _adventureRepository.Delete(id);
-            return RedirectToAction("MyAccount");
+            return RedirectToAction("Index");
         }
 
-
+       
 
     }
 }

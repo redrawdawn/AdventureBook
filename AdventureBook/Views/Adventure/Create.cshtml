@@ -10,7 +10,7 @@
 <hr />
 <div class="row">
     <div class="col-md-4">
-        <form asp-action="Create">
+        <form asp-action="Create" enctype="multipart/form-data">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
             <div class="form-group">
@@ -20,9 +20,20 @@
                 <br />
                 <input asp-for="Difficulty" class="form-control" />
                 <br />
+                
+
+                <div id="photoDisplay">
+                </div>
+                <div>
+                    @Html.TextBox("Photo", null, new { @id = "PhotoFile", type = "file", accept = ".jpg,.jpeg,.png,.gif" }) <br />
+                </div>
+
+                <br />
                 <input asp-for="DateTime" class="form-control" />
                 <br />
                 <span asp-validation-for="Title" class="text-danger"></span>
+
+
 
                 @Html.LabelFor(x => x.SelectedTagIds, "Tags", new { @class = "control-label" })
                 @Html.ListBoxFor(x =>
@@ -47,4 +58,5 @@
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @{await Html.RenderPartialAsync("_PhotoScriptsPartial");}
 }

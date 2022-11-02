@@ -1,0 +1,78 @@
+﻿@using System.Security.Claims
+
+@model AdventureBook.Models.Adventure
+@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+<div class="card-body">
+    <hr style="height:2px;border-width:0;color:gray;background-color:gray" />
+    <div class="card-body">
+        <p class="card-subtitle mb-2 text-muted">
+            @Html.DisplayFor(modelItem => Model.UserProfile.Name)
+        </p>
+        <h1 class="card-title">
+            @Html.DisplayFor(modelItem => Model.Title)
+        </h1>
+
+        @{
+            var files = System.IO.Directory.GetFiles(AdventureBook.Utils.Settings.PhotoPath, Model.Id + ".*");
+            var thisAdventurePhotoFilePath = files.FirstOrDefault();
+
+            if (thisAdventurePhotoFilePath != null)
+            {
+                var fileInfo = new System.IO.FileInfo(thisAdventurePhotoFilePath);
+                <img height="260" style="border-radius: 6%" src="~/photos/@(fileInfo.Name)" />
+            }
+        }
+
+        <p>
+            @Html.DisplayFor(modelItem => Model.Text)
+        </p>
+
+        @{
+            var stars = Enumerable.Range(1, 5);
+            foreach (var star in stars)
+            {
+                var starSpan = (Model.Difficulty == 0) ? "" : (Model.Difficulty >= star) ? "<span>★</span>" : "<span>☆</span>";
+                @Html.Raw(starSpan);
+            }
+        }
+
+        <div>
+            @foreach (var tag in Model.Tags)
+            {
+                <img height="35" src="~/images/@(tag.Name).png" title="@tag.Name" />
+                <span>&nbsp;&nbsp;&nbsp;</span>
+            }
+        </div>
+        <hr />
+        <p class="text-muted">
+            @Html.DisplayFor(modelItem => Model.DateTime)
+        </p>
+        <div>
+            @*<a asp-action="Details" asp-route-id="@item.Id" class="btn btn-outline-primary mx-1" title="View">
+                    <i class="fas fa-eye"></i>
+                </a>*@
+            @{
+                var currentUserProfileId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value);
+                if (Model.UserProfileId == currentUserProfileId)
+                {
+                    <a asp-action="Edit" asp-route-id="@Model.Id" asp-route-nextPage="~/@ViewBag.NextPageAfterAction" class="btn btn-secondary btn-sm">
+                        Edit
+                    </a>
+                    <button class="btn btn-secondary btn-sm" data-toggle="dropdown" type="button" aria- aria-haspopup="true" aria-expanded="false">
+                        Delete
+                    </button>
+                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                        <a asp-controller="Adventure" asp-action="Delete" asp-route-id="@Model.Id" asp-route-nextPage="~/@ViewBag.NextPageAfterAction"
+                           class="btn btn-outline-danger mx-1">
+                            <i class="fas fa-trash">You sure?</i>
+                        </a>
+                    </div>
+                }
+            }
+        </div>
+    </div>
+</div>
