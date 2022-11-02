@@ -10,3 +10,4 @@ namespace AdventureBook.Utils
         public const string PhotoPath = @"C:\Users\16158\workspace\AdventureBook\AdventureBook\wwwroot\photos\";
     }
 }
+
