@@ -16,7 +16,7 @@
             <div class="form-group">
                 <input asp-for="Title" class="form-control" placeholder="Title..." />
                 <br />
-                @Html.TextAreaFor(x => Model.Text, new { @class = "form-control", @placeholder = "Description..." })
+                @Html.TextAreaFor(x => Model.Text, new { @class = "form-control", @placeholder = "Text...", @rows = "5" })
                 <br />
                 <input asp-for="Difficulty" class="form-control" />
                 <br />
