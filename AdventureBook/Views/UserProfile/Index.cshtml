@@ -12,13 +12,13 @@
     <p>You&acute;ve posted @Model.Adventures.Count adventures!</p>
 
     <div class="container">
-        <div class="col">
+        
             @foreach (var item in Model.Adventures)
             {
 
                 await Html.RenderPartialAsync("../Adventure/_CardPartial", item);
             }
 
-        </div>
+        
     </div>
 </div>

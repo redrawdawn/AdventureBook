@@ -23,7 +23,9 @@
             if (thisAdventurePhotoFilePath != null)
             {
                 var fileInfo = new System.IO.FileInfo(thisAdventurePhotoFilePath);
-                <img height="260" style="border-radius: 6%" src="~/photos/@(fileInfo.Name)" />
+                <div class="img-div" style="max-width: 30em; max-height: auto">
+                    <img style="border-radius: 3%; width: 100%; height: 100%;" src="~/photos/@(fileInfo.Name)" />
+                </div>
             }
         }
 

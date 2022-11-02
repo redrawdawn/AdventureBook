@@ -11,7 +11,7 @@
 
         @using (Html.BeginForm("Search", "Adventure", FormMethod.Get, new { @class = "form-inline" }))
         {
-            <a class="btn btn-secondary btn-sm" asp-action="Create">➕</a>
+            <a class="btn btn-secondary btn-lg" asp-action="Create">➕</a>
             <span>&nbsp;&nbsp;&nbsp;&nbsp;</span>
 
             @Html.TextBoxFor(x => Model.SearchString, new { @class = "form-control", @placeholder = "Search..." })
