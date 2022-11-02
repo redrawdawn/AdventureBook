@@ -101,7 +101,7 @@ namespace AdventureBook.Controllers
         // POST: TagController/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, Adventure adventure, string nextPage)
+        public ActionResult Edit(int id, Adventure adventure, string nextController)
         {
             try
             {
@@ -110,7 +110,7 @@ namespace AdventureBook.Controllers
                     SavePhoto(adventure.Id, Request.Form.Files[0]);
                 }
                 _adventureRepository.UpdateAdventure(adventure);
-                return Redirect(nextPage);
+                return RedirectToAction("Index", nextController);
             }
             catch
             {
@@ -120,11 +120,11 @@ namespace AdventureBook.Controllers
 
 
         //Delete
-        public ActionResult Delete(int id)
+        public ActionResult Delete(int id, string nextController)
         {
             _adventureRepository.Delete(id);
             DeletePhotos(id);
-            return RedirectToAction("Index");
+            return RedirectToAction("Index", nextController);
         }
 
         [HttpPost]
@@ -133,7 +133,7 @@ namespace AdventureBook.Controllers
             try
             {
                 _adventureRepository.Delete(id);
-                return RedirectToAction(nextPage, "Index");
+                return RedirectToAction(nextPage);
             }
             catch
             {

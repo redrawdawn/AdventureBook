@@ -6,11 +6,12 @@
                 if (regex.test($(this).val().toLowerCase())) {
                     if (typeof (FileReader) != "undefined") {
                         $("#photoDisplay").show();
-                        $("#photoDisplay").append("<img />");
+                        $("#photoDisplay").append("<img class='img-fluid' />");
                         var reader = new FileReader();
                         reader.onload = function (e) {
                             $("#photoDisplay img").attr("src", e.target.result);
-                            $("#photoDisplay img").attr("style", "height:260px;");
+                            //$("#photoDisplay img").attr("height", "260px");
+                            $("#photoDisplay img").attr("style", "border-radius: 6%");
                         }
                         reader.readAsDataURL($(this)[0].files[0]);
                     } else {

@@ -92,6 +92,11 @@ namespace AdventureBook.Repositories
                         posts.Add(NewPostFromReader(reader));
                     }
 
+                    foreach (var post in posts)
+                    {
+                        post.Tags = _tagRepository.GetTagsByAdventureId(post.Id);
+                    }
+
                     reader.Close();
 
                     return posts;
