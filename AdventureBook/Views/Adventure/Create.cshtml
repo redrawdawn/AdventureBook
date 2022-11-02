@@ -18,14 +18,16 @@
                 <br />
                 @Html.TextAreaFor(x => Model.Text, new { @class = "form-control", @placeholder = "Text...", @rows = "5" })
                 <br />
-                <input asp-for="Difficulty" class="form-control" />
+                <label for="difficultyControl">Number of Stars (1-5)</label>
+                <input asp-for="Difficulty" id="difficultyControl" min="0" max="5" class="form-control" />
                 <br />
                 
 
                 <div id="photoDisplay">
                 </div>
                 <div>
-                    @Html.TextBox("Photo", null, new { @id = "PhotoFile", type = "file", accept = ".jpg,.jpeg,.png,.gif" }) <br />
+                    <label class="btn btn-secondary form-control" for="PhotoFile"> Set Image </label>
+                    @Html.TextBox("Photo", null, new { @id = "PhotoFile", type = "file", style="display: none;", accept = ".jpg,.jpeg,.png,.gif" }) <br />
                 </div>
 
                 <br />

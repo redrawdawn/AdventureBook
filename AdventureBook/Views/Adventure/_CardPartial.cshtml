@@ -6,13 +6,33 @@
 *@
 @{
 }
+
 <div class="card-body">
     <hr style="height:2px;border-width:0;color:gray;background-color:gray" />
-    <div class="card-body">
-        <p class="card-subtitle mb-2 text-muted">
-            @Html.DisplayFor(modelItem => Model.UserProfile.Name)
-        </p>
-        <h1 class="card-title">
+    <div >
+            <span >@Model.UserProfile.Name</span>
+            <span  style="float: right">
+            @{
+                var currentUserProfileId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value);
+                if (Model.UserProfileId == currentUserProfileId)
+                {
+                    <a asp-controller="Adventure" asp-action="Edit" asp-route-id="@Model.Id" asp-route-nextController="@(ViewBag.NextControllerAfterAction)" title="Edit" class="btn btn-light btn-sm">
+                        <i class="bi bi-pen" title="Edit"></i>
+                    </a>
+                    <button class="btn btn-light btn-sm" data-toggle="dropdown" title="Delete" type="button" aria- aria-haspopup="true" aria-expanded="false">
+                        <i class="bi bi-trash3" title="Delete"></i>
+                    </button>
+                    <span class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                        <a asp-controller="Adventure" asp-action="Delete" asp-route-id="@Model.Id" asp-route-nextController="@(ViewBag.NextControllerAfterAction)"
+                           class="btn btn-outline-danger mx-1">
+                            <i>Delete?</i>
+                        </a>
+                    </span>
+                }
+            }
+            </span>
+
+        <h1 class="">
             @Html.DisplayFor(modelItem => Model.Title)
         </h1>
 
@@ -53,28 +73,6 @@
         <p class="text-muted">
             @Html.DisplayFor(modelItem => Model.DateTime)
         </p>
-        <div>
-            @*<a asp-action="Details" asp-route-id="@item.Id" class="btn btn-outline-primary mx-1" title="View">
-                    <i class="fas fa-eye"></i>
-                </a>*@
-            @{
-                var currentUserProfileId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value);
-                if (Model.UserProfileId == currentUserProfileId)
-                {
-                    <a asp-action="Edit" asp-route-id="@Model.Id" asp-route-nextPage="~/@ViewBag.NextPageAfterAction" class="btn btn-secondary btn-sm">
-                        Edit
-                    </a>
-                    <button class="btn btn-secondary btn-sm" data-toggle="dropdown" type="button" aria- aria-haspopup="true" aria-expanded="false">
-                        Delete
-                    </button>
-                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                        <a asp-controller="Adventure" asp-action="Delete" asp-route-id="@Model.Id" asp-route-nextPage="~/@ViewBag.NextPageAfterAction"
-                           class="btn btn-outline-danger mx-1">
-                            <i class="fas fa-trash">You sure?</i>
-                        </a>
-                    </div>
-                }
-            }
-        </div>
+        
     </div>
 </div>

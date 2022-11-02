@@ -4,19 +4,24 @@
 
 @{
     ViewData["Title"] = "Index";
-    ViewBag.NextPageAfterAction = "Adventure";
+    ViewBag.NextControllerAfterAction = "Adventure";
 }
-<div class="container-fluid">
+<div class="container">
     <div class="">
 
         @using (Html.BeginForm("Search", "Adventure", FormMethod.Get, new { @class = "form-inline" }))
         {
-            <a class="btn btn-secondary btn-lg" asp-action="Create">➕</a>
+            <a class="btn btn-light btn-l" title="Log a new Adventure!" style="font-size: 2rem;" asp-action="Create">
+                <i class="bi bi-plus-circle" ></i>
+            </a>
             <span>&nbsp;&nbsp;&nbsp;&nbsp;</span>
 
             @Html.TextBoxFor(x => Model.SearchString, new { @class = "form-control", @placeholder = "Search..." })
-            
-            <input class="btn btn-secondary btn-sm" type="submit" value="🔎︎" />
+
+
+            <button class="btn btn-light btn-sm" type="submit">
+                <i class="bi bi-search" ></i>
+            </button>
         }
     </div>
     @if (Model.Adventures.Count == 0 && !string.IsNullOrEmpty(Model.SearchString)) 
