@@ -11,5 +11,6 @@ namespace AdventureBook.Repositories
         void Delete(int adventureId);
         void UpdateAdventure(Adventure adventure);
         List<Adventure> GetUserAdventures(int userProfileId);
+        //object UpdateUserProfile(int userProfileId);
     }
 }
